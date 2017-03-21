@@ -27,10 +27,14 @@
 % to O on that axis.  I will simulate this a large number of times and
 % build a probability distribution of returning to the origin.
 
+clear all
+
 tic
 
 trials = 10000;
+matrixLength = 10000;
 
+% initializing some data containers
 returnToOriginXYZ = zeros(1,trials);
 returnToOriginXY = zeros(1,trials);
 returnToOriginYZ = zeros(1,trials);
@@ -42,9 +46,9 @@ returnToOriginZ = zeros(1,trials);
 for j=1:trials
 
     % generate list of movements for each dimension
-    X = 2*floor(2*rand(10000,1)) - 1; % composed entirely of -1 and +1
-    Y = 2*floor(2*rand(10000,1)) - 1;
-    Z = 2*floor(2*rand(10000,1)) - 1;
+    X = 2*floor(2*rand(matrixLength,1)) - 1; % composed entirely of -1 and +1
+    Y = 2*floor(2*rand(matrixLength,1)) - 1;
+    Z = 2*floor(2*rand(matrixLength,1)) - 1;
     
     % generate a running total of movements. 0 indicates a return to Origin
     for i=1:1:length(X)
@@ -95,24 +99,36 @@ probabilityInThreeDimensions = sum(returnToOriginXYZ)/length(returnToOriginXYZ)
 toc
 
 % output
-% I ran a simulation of 10 thousand trials, and got the following outputs
+% I ran a simulation of 10,000 trials, and got the following outputs
 % p(1) = 99.17 %
 % p(2) = 73.74 %
 % p(3) = 27.51 %
 %
 % As expected, all values are underestimating what we know to be the actual
-% values from the analytical solution.
+% values from the analytical solution.  Comparing to what is known from the 
+% analytical solution provided, the values for p(1) and p(3) seem
+% tolerable.  I'm surprised by how far off p(2) is, and that seems like a
+% real problem.
 %
 % Advantages of this approach: The simulation approach can be used in
 % situations where we don't have an analytical solution to check against
-% for the right answers.  
+% for the right answers.  For situations like this, the simulation problem
+% is also quite easy to setup, run, and interpret.  Simulations also tend
+% to be accurate in proportion to the amount of computing power you can
+% throw at them.  I ran this one over lunch on an old laptop, a longer
+% trial and a more powerful machine would likely generate more accurate
+% results.
 %
 % Disadvantages: In this case, since we're dealing with an infinite
 % process, a large number of simulations doesn't capture the full behavior
 % of the infinite process, as demonstrated most visibly in the p(2) case.
 % We can know ahead of time that the results will underestimate the true
 % probability, but we can't really know the magnitude of that error without
-% the analytical solution to compare to.
+% the analytical solution to compare to.  Furthermore, simulations can be
+% computationally intensive and reliant on powerful machines, and
+% relatively few *interesting* questions can be answered with a simulation
+% as simple as the one used here, and so would be even more time and
+% resource-intensive for the computing part.
 %
 % Alternatives:  Since we have the analytical solution, we could implement
 % a numerical approximation of that integral function.  I would note that
