@@ -32,20 +32,15 @@ sortedData = sortrows(rawData,[33 34]);
 
 % remove any rows with missing data. No need to specify additional 
 % characters for missing data, this data set just has empty cells
-cleanData = rmmissing(sortedData); 
+cleanData = rmmissing(sortData); 
 
 % remove predictor columns
-lessData = cleanData(:,1:31);
-dataArray = table2array(lessData);
+lessData = sortedData(:,1:31);
+
+dataArray = table2array(cleanData);
 
 % clustering
 dataDist = pdist(dataArray,'euclid'); 
 dataLink = linkage(dataDist,'single'); 
 T = cluster(dataLink,'maxclust',16);
 dendrogram(dataLink, 0)
-
-writetable([cleanData table(T)],'clusters.csv')
-
-% Results
-% Okay, from the dendrogram and manual inspection of the group assignments
-% in clusters.csv
