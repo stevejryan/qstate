@@ -48,4 +48,15 @@ writetable([cleanData table(T)],'clusters.csv')
 
 % Results
 % Okay, from the dendrogram and manual inspection of the group assignments
-% in clusters.csv
+% in clusters.csv, it's clear the clustering didn't do what I hoped for.  I
+% had hoped the data would cluster more or less by experimental groups, so
+% I limited the maximum number of clusters to a conservative estimate of
+% group number (# of temperatures * # of drug concentrations: 16).  The
+% result was one large cluster containing most of the data and the
+% other clusters having only one or two values each.  This seems like the
+% clustering is being driven by outliers, so to get this to work I'd need
+% to find a way of clustering that's resistant to outliers.  Maybe a better
+% linkage function, maybe divisive clustering instead of agglomerative.  In
+% truth, it's been a while since I worked on a clustering analysis, so I
+% suppose I shouldn't be surprised this would need more optimization to get
+% it to a point where it's useful.
